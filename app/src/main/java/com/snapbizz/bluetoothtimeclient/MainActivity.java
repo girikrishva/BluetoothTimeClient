@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.textViewMain);
         button = findViewById(R.id.button);
+        button.setX(1100);
+        button.setY(50);
         button.setOnClickListener(this);
         setBluetoothAdapter();
     }
@@ -61,20 +63,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void onClick(View v) {
-        new GetServerTimeThread(bluetoothAdapter, device, this).start();
+        new GetServerTimeThread(bluetoothAdapter, device).start();
     }
 
     private class GetServerTimeThread extends Thread {
         private BluetoothAdapter bluetoothAdapter;
-        private BluetoothDevice device;
-        private MainActivity mainActivity;
         private BluetoothSocket socket = null;
         private UUID DEFAULT_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-        public GetServerTimeThread(BluetoothAdapter bluetoothAdapter, BluetoothDevice device, MainActivity mainActivity) {
+        public GetServerTimeThread(BluetoothAdapter bluetoothAdapter, BluetoothDevice device) {
             this.bluetoothAdapter = bluetoothAdapter;
-            this.device = device;
-            this.mainActivity = mainActivity;
             try {
                 socket = device.createRfcommSocketToServiceRecord(DEFAULT_UUID);
             } catch (IOException e) {
@@ -91,17 +89,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 byte timeBytes[] = new byte[1024];
                 inputStream.read(timeBytes);
                 timeBytesString = new String(timeBytes);
-                try {
-                    Thread.sleep(1000);
-                    socket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    Thread.sleep(1000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
                 updateTime();
             } catch (IOException connectException) {
                 connectException.printStackTrace();
+            } finally {
+                if (inputStream != null) {
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (socket != null) {
+                    try {
+                        socket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    socket = null;
+                }
             }
         }
     }
