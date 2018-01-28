@@ -20,7 +20,12 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Refresh"
+        android:text="Manual"
         tools:layout_editor_absoluteX="148dp" tools:layout_editor_absoluteY="113dp"/>
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:text="Automatic"
+        tools:layout_editor_absoluteX="133dp" tools:layout_editor_absoluteY="195dp"/>
 
 </android.support.constraint.ConstraintLayout>
