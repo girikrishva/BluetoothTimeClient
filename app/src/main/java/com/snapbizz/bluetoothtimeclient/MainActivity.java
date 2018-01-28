@@ -89,11 +89,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 byte timeBytes[] = new byte[1024];
                 inputStream.read(timeBytes);
                 timeBytesString = new String(timeBytes);
-//                try {
-//                    Thread.sleep(1000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
                 updateTime();
             } catch (IOException connectException) {
                 connectException.printStackTrace();
