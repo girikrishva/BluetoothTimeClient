@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             while (true && checkBox.isChecked()) {
                 try {
                     new GetServerTimeThread(bluetoothAdapter, device, true).start();
-                    Thread.sleep(10000);
+                    Thread.sleep(30000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
