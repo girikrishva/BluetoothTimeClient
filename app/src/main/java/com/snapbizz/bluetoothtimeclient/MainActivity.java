@@ -74,9 +74,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (v.getId() == R.id.checkBox) {
             if (checkBox.isChecked()) {
                 button.setEnabled(false);
-                new GetServerTimeThread(bluetoothAdapter, device, true).start();
+                new AutomaticLoopThread().start();
             } else {
                 button.setEnabled(true);
+            }
+        }
+    }
+
+    private class AutomaticLoopThread extends Thread {
+        public void run() {
+            while (true && checkBox.isChecked()) {
+                try {
+                    new GetServerTimeThread(bluetoothAdapter, device, true).start();
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -94,18 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         public void run() {
-            if (automatic) {
-                while (true && checkBox.isChecked()) {
-                    getServerTime();
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } else {
-                getServerTime();
-            }
+            getServerTime();
         }
 
         private void getServerTime() {
